@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState, useCallback } from "react"
 
 interface Country {
     name: string,
@@ -8,10 +8,9 @@ interface Country {
 export const QuizManagerComponents = () => {
     const [countries, setCountries] = useState<Country[]>([]);
     const [currentCountry, setCurrentCountry] = useState<Country>();
-    const [isRightAnswer, setAnswer] = useState(false);
 
 
-    const fetchCountries = () => {
+    const fetchCountries = useCallback(() => {
         fetch("https://restcountries.com/v2/all")
             .then((response) => response.json())
             .then((data) => {
@@ -24,29 +23,36 @@ export const QuizManagerComponents = () => {
                 console.log(countries);
             })
             .catch((error) => console.error(error));
-    }
+    }, [countries]); 
 
-    const selectRandomCountry = () => {
+    const selectRandomCountry = useCallback(() => {
         if (countries.length != 0) {
             const randomId = Math.floor(Math.random() * countries.length);
-            const newCountry: Country = countries[randomId]; 
-            if(newCountry != null) {
-                setCurrentCountry(newCountry); 
+            const newCountry: Country = countries[randomId];
+            if (newCountry != null) {
+                setCurrentCountry(newCountry);
             }
-            console.log(currentCountry); 
+            console.log(currentCountry);
         }
         else {
-            console.log("La liste est vide")
+            console.log("La liste est vide, on récupère les pays"); 
+            fetchCountries(); 
+            
         }
-    }
+    }, [currentCountry, countries, fetchCountries]); 
 
     useEffect(() => {
-        fetchCountries()
-    }, []);
+        if (countries.length == 0) {
+            fetchCountries(); 
+        }
+        if (currentCountry == null) {
+            selectRandomCountry(); 
+        }
+    }, [countries.length, currentCountry, fetchCountries, selectRandomCountry ]);
 
     return (
-        <button onClick={fetchCountries}>
-            clickMe
+        <button onClick={selectRandomCountry}>
+            {currentCountry?.name}
         </button>
     )
 }
