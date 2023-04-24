@@ -10,6 +10,7 @@ specifiers:
   eslint: ^8.38.0
   eslint-plugin-react-hooks: ^4.6.0
   eslint-plugin-react-refresh: ^0.3.4
+  git-cz: ^4.9.0
   postcss: ^8.4.23
   react: ^18.2.0
   react-dom: ^18.2.0
@@ -31,6 +32,7 @@ devDependencies:
   eslint: 8.39.0
   eslint-plugin-react-hooks: 4.6.0_eslint@8.39.0
   eslint-plugin-react-refresh: 0.3.4_eslint@8.39.0
+  git-cz: 4.9.0
   postcss: 8.4.23
   tailwindcss: 3.3.1_postcss@8.4.23
   typescript: 5.0.4
@@ -1265,6 +1267,11 @@ packages:
   /gensync/1.0.0-beta.2:
     resolution: {integrity: sha512-3hN7NaskYvMDLQY55gnW3NQ+mesEAepTqlg+VEbj7zzqEMBVNhzcGYYeqFo/TlYz6eQiFcp1HcsCZO+nGgS8zg==}
     engines: {node: '>=6.9.0'}
+    dev: true
+
+  /git-cz/4.9.0:
+    resolution: {integrity: sha512-cSRL8IIOXU7UFLdbziCYqg8f8InwLwqHezkiRHNSph7oZqGv0togId1kMTfKil6gzK0VaSXeVBb4oDl0fQCHiw==}
+    hasBin: true
     dev: true
 
   /glob-parent/5.1.2:
