@@ -28,8 +28,12 @@ export const QuizManagerComponents = () => {
 
     const selectRandomCountry = () => {
         if (countries.length != 0) {
-           const randomId = Math.floor(Math.random() * countries.length); 
-
+            const randomId = Math.floor(Math.random() * countries.length);
+            const newCountry: Country = countries[randomId]; 
+            if(newCountry != null) {
+                setCurrentCountry(newCountry); 
+            }
+            console.log(currentCountry); 
         }
         else {
             console.log("La liste est vide")
