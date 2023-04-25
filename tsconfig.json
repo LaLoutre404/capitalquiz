@@ -15,10 +15,17 @@
 
     /* Linting */
     "strict": true,
+    "allowJs": true,
+    "checkJs": false,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
   "include": ["src"],
+  "exclude": [
+    "./tests/",
+    "./node_modules/",
+    "./dist/"
+  ],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
