@@ -8,18 +8,20 @@ export const ProgressBarComponent = (props:
     const [currentQuestion, setCurrentQuestion] = useState(1)
 
     const move = (start: number, end: number, total: number) => {
-        const goal = 100 * end / total;
-        const id = setInterval(() => {
-        setProgress(prevProgress => {
-            if (prevProgress >= goal) {
-            clearInterval(id);
-            return prevProgress;
-            } else {
-            return prevProgress + 1;
-            }
-        });
-        setCurrentQuestion(currentQuestion + 1);
-        }, 10); //delay = vitesse de progression de la bar
+        if (currentQuestion < props.nbQuestion){
+            const goal = 100 * end / total;
+            const id = setInterval(() => {
+            setProgress(prevProgress => {
+                if (prevProgress >= goal) {
+                clearInterval(id);
+                return prevProgress;
+                } else {
+                return prevProgress + 1;
+                }
+            });
+            setCurrentQuestion(currentQuestion + 1);
+            }, 10); //delay = vitesse de progression de la bar
+        }
     };
 
    
