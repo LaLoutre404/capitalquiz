@@ -49,7 +49,7 @@ export const QuizManagerComponents = () => {
                 }
             }
             console.log("les capitales que j'ai récupéré : " + newPropositions);
-            setPropositions(newPropositions);
+            setPropositions(newPropositions.sort(() => Math.random() - 0.5));
             console.log("les capitales que j'ai assigné : " + newPropositions);
             console.log(propositions);
         }
