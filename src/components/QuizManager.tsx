@@ -15,7 +15,9 @@ export const QuizManagerComponents = () => {
     const [progress, setProgress] = useState(10); //progres de la barre de progression
     const [currentQuestion, setCurrentQuestion] = useState(1) //numero de la question en cours
     const [nbQuestion] = useState(10)
-    const [answer, setAnswer] = useState<string | null>(null);
+    const [answerSubmited, setAnswerSubmited] = useState<string | null>(null);
+    const [answer, setAnswer] = useState<string>();
+    const [score, setScore] = useState<number>(0);
 
     const fetchCountries = useCallback(() => {
         fetch("https://restcountries.com/v2/all")
@@ -38,6 +40,7 @@ export const QuizManagerComponents = () => {
             const newPropositions: string[] = [];
             console.log('currentCountry ' + currentCountry.name)
             newPropositions.push(currentCountry?.capital);
+            setAnswer(currentCountry?.capital)
             while (newPropositions.length < 4) {
                 const randomId = Math.floor(Math.random() * countries.length);
                 const newCountry: Country = countries[randomId];
@@ -101,13 +104,20 @@ export const QuizManagerComponents = () => {
     };
 
     const submit = () => {
-        if (currentQuestion < nbQuestion){
-            move(progress + 10, nbQuestion * 10)
-            selectRandomCountry()
+        if (answerSubmited){
+            if (currentQuestion < nbQuestion){
+                move(progress + 10, nbQuestion * 10)
+                selectRandomCountry()
+                if (answer == answerSubmited){
+                    setScore(score + 1)
+                }
+                setAnswerSubmited('')
+            }
         }
+       
     }
     function handleAnswerSelected(value: string) {
-        setAnswer(value);
+        setAnswerSubmited(value);
     }
 
     return (
@@ -118,6 +128,7 @@ export const QuizManagerComponents = () => {
                 <AnswerComponent answer={propositions} onSelect={handleAnswerSelected} />
                 <button onClick={() => submit()}>Valider</button>
                 <ProgressBarComponent nbQuestion={nbQuestion} currentQuestion={currentQuestion} progress={progress}/>
+                Votre score est de : { score }
             </div>}
         </div>
     )
