@@ -12,7 +12,9 @@ export const QuizManagerComponents = () => {
     const [countries, setCountries] = useState<Country[]>([]); //Tout les pays
     const [currentCountry, setCurrentCountry] = useState<Country>(); //pays choisi
     const [propositions, setPropositions] = useState<string[]>([]); // selection de 4 capitales
-
+    const [progress, setProgress] = useState(10); //progres de la barre de progression
+    const [currentQuestion, setCurrentQuestion] = useState(1) //numero de la question en cours
+    const [nbQuestion] = useState(10)
 
     const fetchCountries = useCallback(() => {
         fetch("https://restcountries.com/v2/all")
@@ -66,7 +68,7 @@ export const QuizManagerComponents = () => {
     }, [currentCountry, countries]);
 
     useEffect(() => {
-        if (countries) {
+        if (countries.length == 0) {
             fetchCountries();
         }
         if (currentCountry == null) {
@@ -78,14 +80,38 @@ export const QuizManagerComponents = () => {
 
     }, [countries.length, currentCountry, fetchCountries, selectRandomCountry, selectPropositions, propositions]);
 
+    const move = (end: number, total: number) => {
+        const goal = 100 * end / total;
+        const id = setInterval(() => {
+        setProgress(prevProgress => {
+            if (prevProgress >= goal) {
+            clearInterval(id);
+            return prevProgress;
+            } else {
+            return prevProgress + 1;
+            }
+        });
+        setCurrentQuestion(currentQuestion + 1);
+        }, 10); //delay = vitesse de progression de la bar
+        
+    };
+
+    const submit = () => {
+        if (currentQuestion < nbQuestion){
+            move(progress + 10, nbQuestion * 10)
+            selectRandomCountry()
+            selectPropositions()
+        }
+    }
+
     return (
         <div>
             {currentCountry != null &&
             <div>
                 <QuestionComponent name={currentCountry?.name} />    
                 <AnswerComponent answer={propositions}/>
-            <ProgressBarComponent nbQuestion={10}/>
-            
+                <button onClick={() => submit()}>Valider</button>
+                <ProgressBarComponent nbQuestion={nbQuestion} currentQuestion={currentQuestion} progress={progress}/>
             </div>}
         </div>
     )
