@@ -15,6 +15,7 @@ export const QuizManagerComponents = () => {
     const [progress, setProgress] = useState(10); //progres de la barre de progression
     const [currentQuestion, setCurrentQuestion] = useState(1) //numero de la question en cours
     const [nbQuestion] = useState(10)
+    const [answer, setAnswer] = useState<string | null>(null);
 
     const fetchCountries = useCallback(() => {
         fetch("https://restcountries.com/v2/all")
@@ -105,13 +106,16 @@ export const QuizManagerComponents = () => {
             selectRandomCountry()
         }
     }
+    function handleAnswerSelected(value: string) {
+        setAnswer(value);
+    }
 
     return (
         <div>
             {currentCountry != null &&
             <div>
                 <QuestionComponent name={currentCountry?.name} />    
-                <AnswerComponent answer={propositions}/>
+                <AnswerComponent answer={propositions} onSelect={handleAnswerSelected} />
                 <button onClick={() => submit()}>Valider</button>
                 <ProgressBarComponent nbQuestion={nbQuestion} currentQuestion={currentQuestion} progress={progress}/>
             </div>}
