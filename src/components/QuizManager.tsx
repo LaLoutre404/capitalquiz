@@ -24,21 +24,22 @@ export const QuizManagerComponents = () => {
                     name: country.name,
                     capital: country.capital || "N/A",
                 }));
-                console.log("les pays que j'ai récupéré : " + mycountries);
+                //console.log("les pays que j'ai récupéré : " + mycountries);
                 setCountries(mycountries);
-                console.log("les pays que j'ai assigné : " + countries);
+                //console.log("les pays que j'ai assigné : " + countries);
             })
             .catch((error) => console.error(error));
     }, [countries]);
 
     const selectPropositions = useCallback(() => {
         if (currentCountry != null && countries.length > 0) {
+            setPropositions([])
             const newPropositions: string[] = [];
+            console.log('currentCountry ' + currentCountry.name)
             newPropositions.push(currentCountry?.capital);
             while (newPropositions.length < 4) {
                 const randomId = Math.floor(Math.random() * countries.length);
                 const newCountry: Country = countries[randomId];
-                console.log(countries)
                 if (newPropositions.includes(newCountry.capital)) {
                     console.log("Non cette capitale est déjà selectionné");
                 }
@@ -60,6 +61,7 @@ export const QuizManagerComponents = () => {
             const randomId = Math.floor(Math.random() * countries.length);
             const newCountry: Country = countries[randomId];
             if (newCountry != null) {
+                console.log('newCountry '+ newCountry.name)
                 setCurrentCountry(newCountry);
             }
             console.log("le pays que j'ai assigné : " + currentCountry);
@@ -74,11 +76,12 @@ export const QuizManagerComponents = () => {
         if (currentCountry == null) {
             selectRandomCountry();
         }
-        if (propositions.length == 0) {
-            selectPropositions();
-        }
-
     }, [countries.length, currentCountry, fetchCountries, selectRandomCountry, selectPropositions, propositions]);
+
+    useEffect(() => {
+        selectPropositions();
+    }, [currentCountry]);
+      
 
     const move = (end: number, total: number) => {
         const goal = 100 * end / total;
@@ -100,7 +103,6 @@ export const QuizManagerComponents = () => {
         if (currentQuestion < nbQuestion){
             move(progress + 10, nbQuestion * 10)
             selectRandomCountry()
-            selectPropositions()
         }
     }
 
