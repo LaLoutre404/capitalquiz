@@ -60,7 +60,6 @@ export const QuizManagerComponents = () => {
         }
     }, [currentCountry, countries]);
 
-
     useEffect(() => {
         if (countries.length == 0) {
             fetchCountries();
@@ -76,12 +75,6 @@ export const QuizManagerComponents = () => {
 
     return (
         <div>
-            <button onClick={selectPropositions}>
-                {propositions}
-            </button>
-            <button onClick={selectRandomCountry}>
-                {currentCountry?.name}
-            </button>
         </div>
     )
 }
