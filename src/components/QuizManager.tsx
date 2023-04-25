@@ -8,7 +8,7 @@ interface Country {
 export const QuizManagerComponents = () => {
     const [countries, setCountries] = useState<Country[]>([]);
     const [currentCountry, setCurrentCountry] = useState<Country>();
-    const [propositions, setPropositions] = useState([currentCountry?.capital]);
+    const [propositions, setPropositions] = useState<string[]>([]);
 
 
     const fetchCountries = useCallback(() => {
@@ -26,6 +26,29 @@ export const QuizManagerComponents = () => {
             .catch((error) => console.error(error));
     }, [countries]);
 
+    const selectPropositions = useCallback(() => {
+        if( currentCountry != null) {
+            const newPropositions: string[] = [];
+            newPropositions.push(currentCountry?.capital);
+            while (newPropositions.length < 4) {
+                const randomId = Math.floor(Math.random() * countries.length);
+                const newCountry: Country = countries[randomId];
+                if (newPropositions.includes(newCountry.capital)) {
+                    console.log("Non cette capitale est déjà selectionné");
+                }
+                else {
+                    newPropositions.push(newCountry.capital);
+                    console.log("la capitale ajoutée : " + newCountry.capital);
+                }
+            }
+            console.log("les capitales que j'ai récupéré : " + newPropositions);
+            setPropositions(newPropositions);
+            console.log("les capitales que j'ai assigné : " + newPropositions);
+            console.log(propositions);
+        }
+       
+    }, [countries, currentCountry, propositions]);
+
     const selectRandomCountry = useCallback(() => {
         if (countries.length != 0) {
             const randomId = Math.floor(Math.random() * countries.length);
@@ -35,62 +58,30 @@ export const QuizManagerComponents = () => {
             }
             console.log("le pays que j'ai assigné : " + currentCountry);
         }
-        else {
-            console.log("La liste est vide, on récupère les pays");
-            fetchCountries();
+    }, [currentCountry, countries]);
 
-        }
-    }, [currentCountry, countries, fetchCountries]);
-
-    const selectPropositions = useCallback(() => {
-        setPropositions([]); 
-        if (currentCountry != null) {
-            const newPropositions: string[] = []; 
-            newPropositions.push(currentCountry.capital); 
-            while (newPropositions.length < 4) {
-                const randomId = Math.floor(Math.random() * countries.length);
-                const newCountry: Country = countries[randomId];
-                if (newPropositions.includes(newCountry.capital)) {
-                    console.log("Non cette capitale est déjà selectionné"); 
-                }
-                else {
-                    newPropositions.push(newCountry.capital); 
-                    console.log("la capitale ajoutée : " + newCountry.capital); 
-                }
-            }
-            console.log("les capitales que j'ai récupéré : " + newPropositions); 
-            setPropositions(newPropositions);
-            console.log("les capitales que j'ai assigné : " + newPropositions);
-            console.log(propositions); 
-        }
-        else {
-            selectRandomCountry();
-            selectPropositions();
-        }
-
-    }, [countries, currentCountry, propositions, selectRandomCountry])
 
     useEffect(() => {
-        if (propositions.length == 0) {
-            selectPropositions(); 
-        }
         if (countries.length == 0) {
             fetchCountries();
         }
         if (currentCountry == null) {
             selectRandomCountry();
         }
-   
+        if (propositions.length == 0) {
+            selectPropositions();
+        }
+
     }, [countries.length, currentCountry, fetchCountries, selectRandomCountry, selectPropositions, propositions]);
 
     return (
         <div>
-        <button onClick={selectPropositions}>
-            {propositions}
-        </button>    
-        <button onClick={selectRandomCountry}>
-            {currentCountry?.name}
-        </button>
+            <button onClick={selectPropositions}>
+                {propositions}
+            </button>
+            <button onClick={selectRandomCountry}>
+                {currentCountry?.name}
+            </button>
         </div>
     )
 }
