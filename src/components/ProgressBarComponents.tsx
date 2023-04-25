@@ -4,10 +4,10 @@ export const ProgressBarComponent = (props:
     { nbQuestion: number}
   ) => {
 
-    const [progress, setProgress] = useState(0);
+    const [progress, setProgress] = useState(10);
     const [currentQuestion, setCurrentQuestion] = useState(1)
 
-    const move = (start: number, end: number, total: number) => {
+    const move = (end: number, total: number) => {
         if (currentQuestion < props.nbQuestion){
             const goal = 100 * end / total;
             const id = setInterval(() => {
@@ -27,7 +27,7 @@ export const ProgressBarComponent = (props:
    
     return(
         <>
-            <button onClick={() => move(progress, progress + 10, props.nbQuestion * 10)}>Valider</button>
+            <button onClick={() => move(progress + 10, props.nbQuestion * 10)}>Valider</button>
             <div>
                 Question {currentQuestion} / {props.nbQuestion}
             </div>
