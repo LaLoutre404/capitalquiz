@@ -1,4 +1,7 @@
 import { useEffect, useState, useCallback } from "react"
+import { AnswerComponent } from "./AnswerComponents";
+import { ProgressBarComponent } from "./ProgressBarComponents";
+import { QuestionComponent } from "./QuestionComponent";
 
 interface Country {
     name: string,
@@ -6,9 +9,9 @@ interface Country {
 }
 
 export const QuizManagerComponents = () => {
-    const [countries, setCountries] = useState<Country[]>([]);
-    const [currentCountry, setCurrentCountry] = useState<Country>();
-    const [propositions, setPropositions] = useState<string[]>([]);
+    const [countries, setCountries] = useState<Country[]>([]); //Tout les pays
+    const [currentCountry, setCurrentCountry] = useState<Country>(); //pays choisi
+    const [propositions, setPropositions] = useState<string[]>([]); // selection de 4 capitales
 
 
     const fetchCountries = useCallback(() => {
@@ -27,12 +30,13 @@ export const QuizManagerComponents = () => {
     }, [countries]);
 
     const selectPropositions = useCallback(() => {
-        if( currentCountry != null) {
+        if (currentCountry != null && countries.length > 0) {
             const newPropositions: string[] = [];
             newPropositions.push(currentCountry?.capital);
             while (newPropositions.length < 4) {
                 const randomId = Math.floor(Math.random() * countries.length);
                 const newCountry: Country = countries[randomId];
+                console.log(countries)
                 if (newPropositions.includes(newCountry.capital)) {
                     console.log("Non cette capitale est déjà selectionné");
                 }
@@ -46,11 +50,11 @@ export const QuizManagerComponents = () => {
             console.log("les capitales que j'ai assigné : " + newPropositions);
             console.log(propositions);
         }
-       
+
     }, [countries, currentCountry, propositions]);
 
     const selectRandomCountry = useCallback(() => {
-        if (countries.length != 0) {
+        if (countries.length > 0) {
             const randomId = Math.floor(Math.random() * countries.length);
             const newCountry: Country = countries[randomId];
             if (newCountry != null) {
@@ -58,10 +62,11 @@ export const QuizManagerComponents = () => {
             }
             console.log("le pays que j'ai assigné : " + currentCountry);
         }
+
     }, [currentCountry, countries]);
 
     useEffect(() => {
-        if (countries.length == 0) {
+        if (countries) {
             fetchCountries();
         }
         if (currentCountry == null) {
@@ -75,6 +80,13 @@ export const QuizManagerComponents = () => {
 
     return (
         <div>
+            {currentCountry != null &&
+            <div>
+                <QuestionComponent name={currentCountry?.name} />    
+                <AnswerComponent answer={propositions}/>
+            <ProgressBarComponent nbQuestion={10}/>
+            
+            </div>}
         </div>
     )
 }
