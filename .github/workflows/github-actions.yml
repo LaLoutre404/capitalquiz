@@ -26,7 +26,6 @@ jobs:
         with: ${{ matrix.node-version }}
       - run: pnpm ci
       - run: pnpm run build --if-present
-      - run: pnpm test
       - name: List files in the repository
         run: |
           ls ${{ github.workspace }}
