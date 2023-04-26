@@ -20,7 +20,7 @@ jobs:
         with:
           node-version: 16.x
       - name: Install dependencies
-        run: pnpm ci
+        run: pnpm install
       - name: Build App 
         run: pnpm run build --if-present
       - name: List files in the repository
