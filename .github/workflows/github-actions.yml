@@ -26,10 +26,6 @@ jobs:
             - recursive: true
               args: [--frozen-lockfile, --strict-peer-dependencies]
             - args: [--global, gulp, prettier, typescript]
-      - name: Setup environment
-        uses: actions/setup-dotenv@v1
-        with:
-          path: .env
       - name: Install dependencies
         run: pnpm install
       - name: Build App 
