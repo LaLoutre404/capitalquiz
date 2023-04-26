@@ -122,14 +122,17 @@ export const QuizManagerComponents = () => {
 
     return (
         <div>
-            {currentCountry != null &&
+            {currentCountry != null && nbQuestion != currentQuestion &&
+                <div>
+                    <QuestionComponent name={currentCountry?.name} />    
+                    <AnswerComponent answer={propositions} onSelect={handleAnswerSelected} />
+                    <button onClick={() => submit()}>Valider</button>
+                    <ProgressBarComponent nbQuestion={nbQuestion} currentQuestion={currentQuestion} progress={progress}/>
+                </div>
+            }
             <div>
-                <QuestionComponent name={currentCountry?.name} />    
-                <AnswerComponent answer={propositions} onSelect={handleAnswerSelected} />
-                <button onClick={() => submit()}>Valider</button>
-                <ProgressBarComponent nbQuestion={nbQuestion} currentQuestion={currentQuestion} progress={progress}/>
                 Votre score est de : { score }
-            </div>}
+            </div>
         </div>
     )
 }
