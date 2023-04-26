@@ -1,6 +1,6 @@
 name: Capital Action App
 run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
-on: [pull_request]
+on: [push]
 jobs:
   build-and-deploy:
 
