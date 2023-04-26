@@ -1,6 +1,6 @@
 name: Capital Action App
 run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
-on: [push]
+on: [pull_request]
 jobs:
   build-and-deploy:
 
@@ -30,6 +30,15 @@ jobs:
         run: pnpm install
       - name: Build App 
         run: pnpm run build --if-present
+      - uses: actions/checkout@v2
+      - uses: ngduc/vercel-deploy-action@master
+        with:
+          vercel-cli: vercel # optional ("vercel" or "now")
+          vercel-token: ${{ secrets.VERCEL_TOKEN }} # Required
+          vercel-args: '--prod' #Optional
+          vercel-org-id: ${{ secrets.ORG_ID}}  #Required
+          vercel-project-id: ${{ secrets.PROJECT_ID}} #Required 
+          working-directory: ./sub-directory
       - name: List files in the repository
         run: |
           ls ${{ github.workspace }}
