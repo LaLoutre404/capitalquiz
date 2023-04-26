@@ -26,6 +26,10 @@ jobs:
             - recursive: true
               args: [--frozen-lockfile, --strict-peer-dependencies]
             - args: [--global, gulp, prettier, typescript]
+      - name: Setup environment
+        uses: actions/setup-dotenv@v1
+        with:
+          path: .env
       - name: Install dependencies
         run: pnpm install
       - name: Build App 
@@ -35,6 +39,7 @@ jobs:
         with:
           vercel-cli: vercel # optional ("vercel" or "now")
           vercel-token: ${{ secrets.VERCEL_TOKEN }} # Required
+          github-token: ${{ secrets.TOKEN_GITHUB }} #Optional
           vercel-args: '--prod' #Optional
           vercel-org-id: ${{ secrets.VERCEL_ORG_ID}}  #Required
           vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID}} #Required 
